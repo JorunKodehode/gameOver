@@ -1,25 +1,33 @@
-let character;
-document.getElementById("character");
-let block = document.getElementById("block");
+const character = document.getElementById("character"); // går inn i document/html filen for å hente opp ID-en som heter character
+const block = document.getElementById("block"); // henter ID-en block fra html-filen
+
+const game = document.getElementById("game"); //henter game fra HTML
+game.addEventListener("mousedown", jump); // Legger til en metode for å hoppe
 
 function jump() {
-  if (character.classList != "animate") {
-    character.classList.add("animate");
+  if (!character.classList.contains("animation")) {
+    character.classList.add("animation");
+
+    setTimeout(function () {
+      character.classList.remove("animation");
+    }, 500);
   }
-  setTimeout(function () {
-    character.classList.remove("animate");
-  }, 500);
 }
 
-var checkDead = setInterval(function () {
-  var characterTop = parseInt(
-    window.getComputedStyle(character) - getPropertyValue(top)
+let checkDead = setInterval(function () {
+  const characterTop = parseInt(
+    window.getComputedStyle(character).getPropertyValue(top),
+    10
   );
-  var blockLeft = parseInt(
-    window.getComputedStyle(block) - getPropertyValue(left)
+  const blockLeft = parseInt(
+    window.getComputedStyle(block).getPropertyValue(left),
+    10
   );
-  if (blockLeft < 20 && blockLeft > 0 && characterTop >= 130);
-  block.style.animation = "none";
-  block.style.display = "none";
-  alert("u lose");
+  if (blockLeft < 20 && blockLeft > 0 && characterTop >= 130) {
+    block.style.animation = "none";
+    block.style.display = "none";
+    alert("u lose");
+    clearInterval(checkDead); // clearInterval to stop the loop
+    checkDead = null;
+  }
 }, 10);
